@@ -1,6 +1,8 @@
 package ru.asd.gradletest.gui;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.asd.gradletest.entity.User;
+import ru.asd.gradletest.service.UserService;
 
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
@@ -9,12 +11,16 @@ import java.util.List;
 import java.util.Set;
 
 public class UserTableModel implements TableModel {
+    @Autowired
+    private UserService userService;
+
     private Set<TableModelListener> listeners = new HashSet<>();
 
     private List<User> userList;
 
     public UserTableModel(List<User> userList) {
         this.userList = userList;
+//        this.userList=userService.getUserList();
     }
 
     @Override
