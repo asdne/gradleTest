@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="284.0" prefWidth="405.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.asd.gradletest.controller.MainController">
+    <children>
+
+              <TableView fx:id="table" editable="true" prefHeight="235.0" prefWidth="405.0" tableMenuButtonVisible="true">
+                  <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+              </TableView>
+
+        <HBox alignment="CENTER" layoutX="21.0" layoutY="207.0" prefHeight="50.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+            <children>
+                <TextField fx:id="login" promptText="Имя">
+                    <HBox.margin>
+                        <Insets right="3.0" />
+                    </HBox.margin>
+                </TextField>
+                <TextField fx:id="password" promptText="пароль">
+                    <HBox.margin>
+                        <Insets right="3.0" />
+                    </HBox.margin>
+                </TextField>
+
+                <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#addUser" text="Добавить" />
+            </children>
+        </HBox>
+      <ScrollPane prefHeight="243.0" prefWidth="405.0">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="244.0" prefWidth="402.0" />
+        </content>
+      </ScrollPane>
+    </children>
+</AnchorPane>

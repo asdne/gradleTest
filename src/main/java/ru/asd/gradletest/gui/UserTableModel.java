@@ -15,12 +15,12 @@ public class UserTableModel implements TableModel {
     private UserService userService;
 
     private Set<TableModelListener> listeners = new HashSet<>();
-
+    @Autowired
     private List<User> userList;
 
-    public UserTableModel(List<User> userList) {
-        this.userList = userList;
-//        this.userList=userService.getUserList();
+    public UserTableModel() {
+        //     this.userList = userList;
+        this.userList = userService.getUserList();
     }
 
     @Override

@@ -35,7 +35,7 @@ dependencies {
     }
 }
 bootJar {
-    mainClassName = 'ru.asd.gradletest.gradletest'
+    mainClassName = 'ru.asd.gradletest.GradleTest'
     baseName = 'gradletest'
     version =  '0.1.0'
 }
