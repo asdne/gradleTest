@@ -6,13 +6,13 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.asd.gradletest.entity.User;
 import ru.asd.gradletest.service.UserService;
 
 import javax.annotation.PostConstruct;
-import java.awt.*;
 import java.util.List;
 
 @SuppressWarnings("SpringJavaAutowiringInspection")
@@ -26,9 +26,9 @@ public class MainController {
     @FXML
     private TableView<User> table;
     @FXML
-    private javafx.scene.control.TextField login;
+    private TextField login;
     @FXML
-    private javafx.scene.control.TextField password;
+    private TextField password;
     /*@FXML
     private TextField roles;
 */
@@ -63,23 +63,29 @@ public class MainController {
 
         // Добавляем столбцы к таблице
         TableColumn<User, String> idColumn = new TableColumn<>("ID");
+        idColumn.setEditable(true);
+        idColumn.maxWidthProperty().set(70);
+        idColumn.minWidthProperty().set(50);
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
 
-        TableColumn<User, String> nameColumn = new TableColumn<>("Имя");
+        TableColumn<User, String> nameColumn = new TableColumn<>("Login");
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("login"));
+        nameColumn.maxWidthProperty().set(200);
+        nameColumn.minWidthProperty().set(100);
 
-        TableColumn<User, String> phoneColumn = new TableColumn<>("Телефон");
-        phoneColumn.setCellValueFactory(new PropertyValueFactory<>("password"));
+        TableColumn<User, String> passwordColumn = new TableColumn<>("Пароль");
+        passwordColumn.setCellValueFactory(new PropertyValueFactory<>("password"));
 /*
 
         TableColumn<User, String> emailColumn = new TableColumn<>("E-mail");
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
 */
 
-        table.getColumns().setAll(idColumn, nameColumn, phoneColumn);
+        table.getColumns().setAll(idColumn, nameColumn, passwordColumn);
 
         // Добавляем данные в таблицу
         table.setItems(data);
+        table.setEditable(true);
     }
 
     /**
