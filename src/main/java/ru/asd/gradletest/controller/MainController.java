@@ -1,19 +1,27 @@
 package ru.asd.gradletest.controller;
 
 
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.util.Callback;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.asd.gradletest.entity.User;
+import ru.asd.gradletest.entity.UserRole;
 import ru.asd.gradletest.service.UserService;
 
 import javax.annotation.PostConstruct;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @SuppressWarnings("SpringJavaAutowiringInspection")
 public class MainController {
@@ -23,12 +31,21 @@ public class MainController {
     private UserService userService;
 
     // Инъекции JavaFX
+
     @FXML
     private TableView<User> table;
     @FXML
-    private TextField login;
+    private TableColumn<User, Long> id;
     @FXML
-    private TextField password;
+    private TableColumn<User, String> login;
+    @FXML
+    private TableColumn<User, String> password;
+    @FXML
+    private TableColumn<User, UserRole> roles;
+    @FXML
+    private TextField logined;
+    @FXML
+    private TextField passworded;
     /*@FXML
     private TextField roles;
 */
@@ -60,32 +77,47 @@ public class MainController {
     public void init() {
         List<User> users = userService.getUserList();
         data = FXCollections.observableArrayList(users);
-
+        table.setEditable(true);
         // Добавляем столбцы к таблице
-        TableColumn<User, String> idColumn = new TableColumn<>("ID");
-        idColumn.setEditable(true);
-        idColumn.maxWidthProperty().set(70);
-        idColumn.minWidthProperty().set(50);
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        //     TableColumn login = new TableColumn("Login");
+        login.setCellValueFactory(
+                new PropertyValueFactory<User, String>("login"));
 
-        TableColumn<User, String> nameColumn = new TableColumn<>("Login");
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("login"));
-        nameColumn.maxWidthProperty().set(200);
-        nameColumn.minWidthProperty().set(100);
+        login.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        TableColumn<User, String> passwordColumn = new TableColumn<>("Пароль");
-        passwordColumn.setCellValueFactory(new PropertyValueFactory<>("password"));
+        login.setEditable(true);
+
+        login.setOnEditCommit((TableColumn.CellEditEvent<User, String> event) -> {
+            TablePosition<User, String> position = event.getTablePosition();
+            String newLogin = event.getNewValue();
+            int row = position.getRow();
+            User user = event.getTableView().getItems().get(row);
+            user.setLogin(newLogin);
+            userService.saveUser(user);
+        });
+        password.setCellValueFactory(new PropertyValueFactory<>("password"));
+
+        ObservableList<UserRole> userRoleList = FXCollections.observableArrayList(new UserRole("ROLE_USER"),new UserRole("ROLE_ADMIN"));
+/* вот здесь не понимаю как роли считать
+в сете roles они в итоге получены, а вот что делать дальше с ними не пойму пока
+ */
+       roles.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<User, UserRole>, ObservableValue<UserRole>>() {
+           @Override
+           public ObservableValue<UserRole> call(TableColumn.CellDataFeatures<User, UserRole> param) {
+               Set<UserRole> roles= new HashSet<>();
+               User user = param.getValue();
+               roles=user.getRoles();
+               return null;
+           }
+       });
 /*
 
-        TableColumn<User, String> emailColumn = new TableColumn<>("E-mail");
-        emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
 */
-
-        table.getColumns().setAll(idColumn, nameColumn, passwordColumn);
+        roles.setCellFactory(ComboBoxTableCell.forTableColumn());
 
         // Добавляем данные в таблицу
         table.setItems(data);
-        table.setEditable(true);
     }
 
     /**
@@ -94,13 +126,13 @@ public class MainController {
      */
     @FXML
     public void addUser() {
-        User user = new User(login.getText(), password.getText());
+        User user = new User(logined.getText(), passworded.getText());
         userService.saveUser(user);
         data.add(user);
 
         // чистим поля
-        login.setText("");
-        password.setText("");
+        logined.setText("");
+        passworded.setText("");
         // txtEmail.setText("");
     }
 }

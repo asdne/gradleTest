@@ -20,4 +20,6 @@ public class UserRest {
         List<User> user = Arrays.asList(responseEntity.getBody());
         return user;
     }
+
+
 }
