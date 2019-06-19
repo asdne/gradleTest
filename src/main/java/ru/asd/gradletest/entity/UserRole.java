@@ -2,6 +2,10 @@ package ru.asd.gradletest.entity;
 
 public class UserRole  {
 
+    @Override
+    public String toString() {
+        return role;
+    }
 
     private Long id;
 

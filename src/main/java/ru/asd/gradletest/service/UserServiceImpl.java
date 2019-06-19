@@ -24,12 +24,26 @@ public class UserServiceImpl implements UserService {
         userList.add(user);
         userList.add(user1);
         userList.add(user2);
-       // return userList;
-    return userRest.getUserList();
+        // return userList;
+        return userRest.getUserList();
     }
 
     @Override
     public void saveUser(User user) {
 
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+        userRest.deleteUser(id);
+    }
+
+    @Override
+    public void addNewUser(String login, String password) {
+        userRest.newUser(login, password);
+    }
+
+    public void updateUser(User user){
+        userRest.updateUser(user);
     }
 }
